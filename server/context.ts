@@ -1,13 +1,11 @@
-import { auth } from "@/auth";
-import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { authOptions } from "@/lib/auth"
+import { getServerSession } from "next-auth"
 
-export const createContext = async (opts: FetchCreateContextFnOptions) => {
-  const session = await auth();
-  const { req, resHeaders } = opts;
+export const createTRPCContext = async (opts: {headers: Headers}) => {
+	const session = await getServerSession(authOptions);
 
-  return {
-    session,
-    req,
-    res: resHeaders,
-  };
-};
+	return {
+		session,
+		...opts
+	}
+}
