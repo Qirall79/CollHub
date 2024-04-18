@@ -1,13 +1,15 @@
 import { trpcServer } from "@/lib/trpcServerClient";
 import Image from "next/image";
+import User from "./components/User";
+import { Suspense } from "react";
 
 export default async function Home() {
-  const hello = await trpcServer.hello();
-  const protectedRoute = await trpcServer.getProtectedRoute();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {hello + " " + protectedRoute}
+      <Suspense fallback={<h1>Loading User Infos...</h1>}>
+        <User />
+      </Suspense>
     </main>
   );
 }

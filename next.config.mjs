@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	images: {
+		remotePatterns: [
+			{
+				hostname: "cdn.intra.42.fr"
+			},
+			{
+				hostname: "avatars.githubusercontent.com"
+			}
+		]
+	}
+};
 
 export default nextConfig;
