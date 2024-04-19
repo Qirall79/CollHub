@@ -20,7 +20,7 @@ export const Provider = ({children} : {children: React.ReactNode}) => {
 			}
 		})
 	})
-	
+
 	const trpcClient = trpc.createClient({
 		links: [
 			httpBatchLink({
@@ -33,7 +33,7 @@ export const Provider = ({children} : {children: React.ReactNode}) => {
 	return (
 		<trpc.Provider client={trpcClient} queryClient={queryClient}>
 			<QueryClientProvider client={queryClient} >
-				<NextUIProvider>	
+				<NextUIProvider>
 					{children}
 				</NextUIProvider>
 			</QueryClientProvider>
