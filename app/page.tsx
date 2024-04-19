@@ -1,5 +1,3 @@
-import { trpcServer } from "@/lib/trpcServerClient";
-import Image from "next/image";
 import User from "./components/User";
 import { Suspense } from "react";
 

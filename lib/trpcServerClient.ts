@@ -19,6 +19,6 @@ const createContext = cache(() => {
 export const trpcServer = createCaller(createContext, {
 	onError: ({error}) => {
 		if (error.code == 'UNAUTHORIZED')
-			redirect("/api/auth/signin");
+			redirect("/login");
 	}
 });
