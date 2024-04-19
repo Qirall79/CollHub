@@ -4,6 +4,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type Adapter } from "next-auth/adapters";
 import GithubProvider from "next-auth/providers/github";
 import FortyTwoProvider from "next-auth/providers/42-school";
+import DiscordProvider from "next-auth/providers/discord"
 import axios from "axios";
 
 export const authOptions: AuthOptions = {
@@ -18,6 +19,11 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.FORTY_TWO_CLIENT_SECRET ?? "",
       allowDangerousEmailAccountLinking: true,
     }),
+    DiscordProvider({
+      clientId: process.env.DISCORD_CLIENT_ID ?? "",
+      clientSecret: process.env.DISCORD_CLIENT_SECRET ?? "",
+      allowDangerousEmailAccountLinking: true
+    })
   ],
   adapter: PrismaAdapter(db) as Adapter,
   callbacks: {
