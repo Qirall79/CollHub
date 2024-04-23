@@ -8,17 +8,16 @@ import { cache } from "react";
 const createCaller = createCallerFactory(appRouter);
 
 const createContext = cache(() => {
-	const heads = new Headers(headers());
-	heads.set("x-trpc-source", "rsc");
-  
-	return createTRPCContext({
-	  headers: heads,
-	});
+  const heads = new Headers(headers());
+  heads.set("x-trpc-source", "rsc");
+
+  return createTRPCContext({
+    headers: heads,
   });
+});
 
 export const trpcServer = createCaller(createContext, {
-	onError: ({error}) => {
-		if (error.code == 'UNAUTHORIZED')
-			redirect("/login");
-	}
+  onError: ({ error }) => {
+    if (error.code == "UNAUTHORIZED") redirect("/login");
+  },
 });

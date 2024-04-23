@@ -1,11 +1,10 @@
 import { protectedProcedure, publicProcedure, router } from ".";
+import projectRouter from "./routers/projectRouter";
 import { userRouter } from "./routers/userRouter";
 
 export const appRouter = router({
-	hello: publicProcedure.query(() => {
-		return "Hello world!"
-	}),
-	users: userRouter
+	users: userRouter,
+	projects: projectRouter
 })
 
 export type AppRouter = typeof appRouter;
