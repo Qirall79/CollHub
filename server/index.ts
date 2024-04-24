@@ -12,10 +12,17 @@ export const protectedProcedure = t.procedure.use(async ({ctx, next}) => {
 	if (!ctx.session || !ctx.session.user)
 		throw new TRPCError({code: 'UNAUTHORIZED'})
 
+	const user = ctx.session.user as {
+		id: string;
+		name?: string | null | undefined;
+		email?: string | null | undefined;
+		image?: string | null | undefined;
+	}
+
 	return next({
 		ctx: {
-			session: { ...ctx.session, user: ctx.session.user }
-		}
+			session: { ...ctx.session, user},
+		} 
 	});
 })
 export const createCallerFactory = t.createCallerFactory;

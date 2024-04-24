@@ -8,13 +8,8 @@ export const userRouter = router({
     return ctx.session.user;
   }),
   getUser: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .query(async ({ input }) => {
-      const { id } = input;
+    .query(async ({ ctx }) => {
+      const { id } = ctx.session.user;
 
       const user = await db.user.findFirst({
         where: {
@@ -27,17 +22,12 @@ export const userRouter = router({
   updateUser: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
         discord: z.string().optional(),
         github: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const {
-        session: { user },
-      } = ctx;
-
-      const { id } = input;
+      const { id } = ctx.session.user;
 
       const newUser = await db.user.update({
         where: {
@@ -49,6 +39,6 @@ export const userRouter = router({
         },
       });
 
-      return user;
+      return newUser;
     }),
 });

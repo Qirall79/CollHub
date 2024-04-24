@@ -3,32 +3,26 @@ import { protectedProcedure, router } from "..";
 import { db } from "@/lib/db";
 
 const projectRouter = router({
-  getProject: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .query(async ({ input }) => {
-      const { id } = input;
-      const project = await db.project.findFirst({
-        where: {
-          id,
-        },
-      });
+  getProject: protectedProcedure.query(async ({ ctx }) => {
+    const { id } = ctx.session.user;
+    const project = await db.project.findFirst({
+      where: {
+        id,
+      },
+    });
 
-      return project;
-    }),
+    return project;
+  }),
   createProject: protectedProcedure
     .input(
       z.object({
-        authorId: z.string(),
         title: z.string(),
         description: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const { authorId, title, description } = input;
+      const { title, description } = input;
+      const { id: authorId } = ctx.session.user;
 
       const project = await db.project.create({
         data: {
