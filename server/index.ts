@@ -6,11 +6,14 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson
 })
 
+export const trpcError = (opts: {other: any}) => {
+
+}
 export const router = t.router;
 export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(async ({ctx, next}) => {
 	if (!ctx.session || !ctx.session.user)
-		throw new TRPCError({code: 'UNAUTHORIZED'})
+		throw new TRPCError({code: 'INTERNAL_SERVER_ERROR', })
 
 	const user = ctx.session.user as {
 		id: string;

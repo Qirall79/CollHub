@@ -6,6 +6,7 @@ import { useState } from "react"
 import superjson from "superjson"
 import {httpBatchLink} from "@trpc/client"
 import { NextUIProvider } from "@nextui-org/react"
+import { SessionProvider } from "next-auth/react"
 
 const url = 'http://localhost:3000/api/trpc/'
 
@@ -34,7 +35,9 @@ export const Provider = ({children} : {children: React.ReactNode}) => {
 		<trpc.Provider client={trpcClient} queryClient={queryClient}>
 			<QueryClientProvider client={queryClient} >
 				<NextUIProvider>
-					{children}
+					<SessionProvider>
+						{children}
+					</SessionProvider>
 				</NextUIProvider>
 			</QueryClientProvider>
 		</trpc.Provider>

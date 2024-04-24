@@ -1,4 +1,4 @@
-import { protectedProcedure, publicProcedure, router } from ".";
+import { router } from ".";
 import projectRouter from "./routers/projectRouter";
 import { userRouter } from "./routers/userRouter";
 

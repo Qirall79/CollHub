@@ -1,8 +1,8 @@
 import { createCallerFactory } from "@/server";
 import { createTRPCContext } from "@/server/context";
 import { appRouter } from "@/server/router";
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
 const createCaller = createCallerFactory(appRouter);
