@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} h-screen w-screen dark text-foreground`}>
+      <body className={`${inter.className} min-h-screen min-w-screen dark text-foreground bg-slate-950`}>
         <Provider>
           <Nav />
           {children}

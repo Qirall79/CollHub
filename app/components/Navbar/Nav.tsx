@@ -19,8 +19,10 @@ export default async function Nav() {
       path: "/projects",
     },
   ];
+  if (!session?.user) return null;
+
   return (
-    <nav className="w-full flex justify-between items-center py-6 px-[10%]">
+    <nav className="w-full max-w-[1280px] m-auto flex justify-between items-center py-6 px-[10%]">
       <MenuBar />
       <h1
         className={`text-4xl md:text-5xl ${vt323.className} font-semibold text-cyan-500`}
