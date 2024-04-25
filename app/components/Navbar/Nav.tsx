@@ -27,7 +27,7 @@ export default async function Nav() {
       <h1
         className={`text-4xl md:text-5xl ${vt323.className} font-semibold text-cyan-500`}
       >
-        CollHub
+        <span className="text-white">Coll</span>Hub
       </h1>
       <ul
         className={`${vt323.className} text-xl md:text-2xl hidden md:flex items-center space-x-10`}
