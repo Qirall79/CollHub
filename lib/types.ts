@@ -6,6 +6,12 @@ export interface IUser {
 	image?: string,
 }
 
+export interface IProjectInput {
+	title: string,
+	description?: string,
+	technologies: string
+}
+
 export interface IProject {
 	id: string,
 	title: string,
@@ -14,6 +20,7 @@ export interface IProject {
 	author: IUser,
 	applications: IApplication[]
 }
+
 
 export interface IApplication {
 	id: string,
