@@ -27,6 +27,7 @@ export default function UserDropdown({ user }: { user: IUser }) {
           <DropdownItem key="settings">My Settings</DropdownItem>
           <DropdownItem key="settings">My Applications</DropdownItem>
           <DropdownItem
+            className="text-danger"
             key="logout"
             color="danger"
             onClick={() => {

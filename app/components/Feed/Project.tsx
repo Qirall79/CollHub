@@ -1,9 +1,10 @@
 "use client";
 
 import { inter, sourceCodePro } from "@/app/fonts";
+import { trpc } from "@/lib/trpcClient";
 import { IProject } from "@/lib/types";
 import { Button, Chip } from "@nextui-org/react";
-import { Technology } from "@prisma/client";
+// import { Technology } from "@prisma/client";
 import React, { useState } from "react";
 
 const chipColors: (
@@ -28,12 +29,12 @@ export const Project = ({ project }: { project: IProject }) => {
       >
         {project.title}
       </h3>
-      <p className="text-sm text-slate-600 mb-2">
-        <span className="text-slate-800">by</span> {project.author.name}
+      <p className="text-sm text-slate-600 mb-2 capitalize">
+        <span className="text-slate-800 lowercase">by</span> {project.author.name}
       </p>
       <p className="text-sm mb-4">{project.description}</p>
       <ul className="flex space-x-2">
-        {project.technologies.map((t: Technology) => {
+        {project.technologies.map((t: any) => {
           return (
             <Chip
               size="sm"
