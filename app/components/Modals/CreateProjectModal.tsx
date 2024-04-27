@@ -102,6 +102,7 @@ export default function CreatePostModal() {
 						message: "Select the languages used for this project"
 					}})}
 					isInvalid={!!errors.technologies}
+					errorMessage={errors.technologies?.message}
                     items={languages}
                     isMultiline={true}
                     selectionMode="multiple"
