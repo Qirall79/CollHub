@@ -25,13 +25,11 @@ const projectRouter = router({
       z.object({
         title: z.string(),
         description: z.string().optional(),
-        technologies: z.array(z.object({
-          name: z.string()
-        }))
+        technologies: z.string()
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const { title, description } = input;
+      const { title, description, technologies } = input;
       const { id: authorId } = ctx.session.user;
 
       const project = await db.project.create({
@@ -39,6 +37,7 @@ const projectRouter = router({
           authorId,
           title,
           description,
+          technologies
         },
       });
 

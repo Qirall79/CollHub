@@ -19,25 +19,7 @@ import {
 } from "@nextui-org/react";
 import { IProjectInput } from "@/lib/types";
 import { useForm } from "react-hook-form";
-
-const languages = [
-	{
-		name: "C",
-		key: 1
-	},
-	{
-		name: "Python",
-		key: 2
-	},
-	{
-		name: "JavaScript",
-		key: 3
-	},
-	{
-		name: "TypeScript",
-		key: 4
-	},
-]
+import { SelectLanguage } from "./SelectLanguage";
 
 export default function CreatePostModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -54,8 +36,9 @@ export default function CreatePostModal() {
     reset({
       title: "",
       description: "",
+      technologies: ""
     });
-	onClose();
+    onClose();
   };
 
   return (
@@ -96,45 +79,12 @@ export default function CreatePostModal() {
                     label="Description"
                     size="sm"
                   />
-                  <Select 
-				  size="lg"
-				  	{...register("technologies", {required: {
-						value: true,
-						message: "Select the languages used for this project"
-					}})}
-					isInvalid={!!errors.technologies}
-					errorMessage={errors.technologies?.message}
-                    items={languages}
-                    isMultiline={true}
-                    selectionMode="multiple"
-                    placeholder="Select languages"
-                    labelPlacement="outside"
-                    renderValue={(items) => {
-                      return (
-                        <div className="flex flex-wrap gap-2">
-                          {items.map((item) => (
-                            <Chip key={item.key}>{item.textValue}</Chip>
-                          ))}
-                        </div>
-                      );
-                    }}
-                  >
-                    {(user) => (
-                      <SelectItem key={user.name} textValue={user.name}>
-                        <div className="flex gap-2 items-center">
-                          {user.name}
-                        </div>
-                      </SelectItem>
-                    )}
-                  </Select>
+                  <SelectLanguage errors={errors} register={register} />
                   <div className="w-full flex justify-end space-x-2">
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Cancel
                     </Button>
-                    <Button
-                      type="submit"
-                      className="bg-cyan-500"
-                    >
+                    <Button type="submit" className="bg-cyan-500">
                       Post
                     </Button>
                   </div>
