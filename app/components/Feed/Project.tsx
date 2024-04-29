@@ -53,7 +53,7 @@ export const Project = ({ project }: { project: IProject }) => {
       >
         <Button className="mt-6 mb-1 max-w-40 bg-cyan-950">Send Request</Button>
         <p className={`text-xs text-slate-700 translate-x-1`}>
-          {project.applications.length ?? project.applications.length} requests
+          {project.applications?.length ?? project.applications?.length} requests
           sent
         </p>
       </div>

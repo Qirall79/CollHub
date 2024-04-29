@@ -4,6 +4,8 @@ import { Input } from "@nextui-org/react";
 import { FiSearch } from "react-icons/fi";
 import CreatePostModal from "../Modals/CreateProjectModal";
 import FilterModal from "../Modals/FilterModal";
+import { trpcServer } from "@/lib/trpcServerClient";
+import { Project as ProjectType } from "@prisma/client";
 
 const data = [
   {
@@ -108,6 +110,8 @@ const data = [
 ];
 
 export default async function Feed() {
+  const projects = await trpcServer.projects.getAll();
+  
   return (
     <div className="flex flex-col grow space-y-6">
       <div className="flex flex-col md:flex-row md:space-x-2 items-center space-y-2 md:space-y-0">
@@ -122,7 +126,7 @@ export default async function Feed() {
         </div>
       </div>
       <div className="flex flex-col grow space-y-6">
-        {data.map((project: IProject) => {
+        {projects.map((project: IProject) => {
           return <Project key={project.id} project={project} />;
         })}
       </div>

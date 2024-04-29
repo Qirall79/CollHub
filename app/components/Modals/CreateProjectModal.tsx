@@ -20,23 +20,30 @@ import {
 import { IProjectInput } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { SelectLanguage } from "./SelectLanguage";
+import { trpc } from "@/lib/trpcClient";
 
 export default function CreatePostModal() {
+  const utils = trpc.useUtils()
+  const mutation = trpc.projects.createProject.useMutation({
+    onSuccess: () => {
+      utils.projects.getAll.invalidate()
+    }
+  });
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm<IProjectInput>();
 
-  const onSubmit = (data: IProjectInput) => {
-    console.log(data);
+  const onSubmit = async (data: IProjectInput) => {
+    await mutation.mutateAsync(data);
+
     reset({
       title: "",
       description: "",
-      technologies: ""
+      technologies: "",
     });
     onClose();
   };
@@ -84,7 +91,11 @@ export default function CreatePostModal() {
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Cancel
                     </Button>
-                    <Button type="submit" className="bg-cyan-500">
+                    <Button
+                      isLoading={mutation.isPending}
+                      type="submit"
+                      className="bg-cyan-500"
+                    >
                       Post
                     </Button>
                   </div>

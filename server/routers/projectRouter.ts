@@ -4,7 +4,16 @@ import { db } from "@/lib/db";
 
 const projectRouter = router({
   getAll: protectedProcedure.query(async () => {
-    const projects = await db.project.findMany();
+    const projects = await db.project.findMany(
+      {
+        include: {
+          author: true
+        },
+        orderBy: {
+          createdAt: "desc"
+        }
+      }
+    );
 
     return projects;
   }),

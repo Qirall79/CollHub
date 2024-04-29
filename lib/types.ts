@@ -1,9 +1,10 @@
 import { Application } from "@prisma/client";
 
 export interface IUser {
-	name?: string,
-	email?: string,
-	image?: string,
+	id: string,
+	name: string | null,
+	email: string | null,
+	image: string | null,
 }
 
 export interface IProjectInput {
@@ -15,10 +16,10 @@ export interface IProjectInput {
 export interface IProject {
 	id: string,
 	title: string,
-	description?: string,
+	description: string | null,
 	technologies: string,
 	author: IUser,
-	applications: IApplication[]
+	applications?: IApplication[]
 }
 
 
