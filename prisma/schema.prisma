@@ -71,16 +71,10 @@ model Project {
   title        String
   description  String?
   createdAt    DateTime      @default(now())
-  technologies Technology[]
+  technologies String
   applications Application[]
   authorId     String
   author       User          @relation(name: "author", fields: [authorId], references: [id], onDelete: Cascade)
-}
-
-model Technology {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  projects Project[]
 }
 
 model Application {

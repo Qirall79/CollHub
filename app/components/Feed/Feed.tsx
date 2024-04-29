@@ -1,5 +1,3 @@
-"use client";
-
 import { IProject } from "@/lib/types";
 import { Project } from "./Project";
 import { Input } from "@nextui-org/react";
@@ -14,12 +12,7 @@ const data = [
     description:
       "Building a responsive e-commerce platform for online shopping.",
     createdAt: "2024-04-25T12:00:00Z",
-    technologies: [
-      {
-        id: "ckrp3x78h0001mktn0v4fh6sq",
-        name: "C",
-      },
-    ],
+    technologies: "C",
     applications: [
       {
         id: "ckrp3x78h0005mktned3ghhdo",
@@ -52,16 +45,7 @@ const data = [
     description:
       "Building a responsive e-commerce platform for online shopping.",
     createdAt: "2024-04-25T12:00:00Z",
-    technologies: [
-      {
-        id: "ckrp3x78h0003mktn80jcl9d1",
-        name: "JavaScript",
-      },
-      {
-        id: "ckrp3x78h0004mktnc5lfepqb",
-        name: "Python",
-      },
-    ],
+    technologies: "Python,JavaScript",
     applications: [
       {
         id: "ckrp3x78h0005mktned3ghhdo",
@@ -94,12 +78,7 @@ const data = [
     description:
       "Building a responsive e-commerce platform for online shopping.",
     createdAt: "2024-04-25T12:00:00Z",
-    technologies: [
-      {
-        id: "ckrp3x78h0001mktn0v4fh6sq",
-        name: "Cpp",
-      },
-    ],
+    technologies: "Cpp",
     applications: [
       {
         id: "ckrp3x78h0005mktned3ghhdo",

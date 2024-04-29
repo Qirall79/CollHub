@@ -50,6 +50,7 @@ export default function CreatePostModal() {
   } = useForm<IProjectInput>();
 
   const onSubmit = (data: IProjectInput) => {
+    console.log(data);
     reset({
       title: "",
       description: "",
@@ -119,7 +120,7 @@ export default function CreatePostModal() {
                     }}
                   >
                     {(user) => (
-                      <SelectItem key={user.key} textValue={user.name}>
+                      <SelectItem key={user.name} textValue={user.name}>
                         <div className="flex gap-2 items-center">
                           {user.name}
                         </div>

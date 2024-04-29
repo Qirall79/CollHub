@@ -1,4 +1,4 @@
-import { Application, Technology } from "@prisma/client";
+import { Application } from "@prisma/client";
 
 export interface IUser {
 	name?: string,
@@ -16,7 +16,7 @@ export interface IProject {
 	id: string,
 	title: string,
 	description?: string,
-	technologies: Technology[],
+	technologies: string,
 	author: IUser,
 	applications: IApplication[]
 }
