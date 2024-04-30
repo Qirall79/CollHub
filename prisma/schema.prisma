@@ -44,17 +44,17 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   discord       String?
   github        String?
   accounts      Account[]
   sessions      Session[]
-  projects      Project[]     @relation(name: "author")
-  applications  Application[]
+  projects      Project[] @relation(name: "author")
+  requests      Request[]
 }
 
 model VerificationToken {
@@ -67,21 +67,22 @@ model VerificationToken {
 
 // Project listing
 model Project {
-  id           String        @id @default(cuid())
+  id           String    @id @default(cuid())
   title        String
   description  String?
-  createdAt    DateTime      @default(now())
+  createdAt    DateTime  @default(now())
   technologies String
-  applications Application[]
+  requests     Request[]
   authorId     String
-  author       User          @relation(name: "author", fields: [authorId], references: [id], onDelete: Cascade)
+  author       User      @relation(name: "author", fields: [authorId], references: [id], onDelete: Cascade)
 }
 
-model Application {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  applicantId String
-  projectId   String
-  applicant   User     @relation(fields: [applicantId], references: [id], onDelete: Cascade)
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+model Request {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  body      String?
+  senderId  String
+  projectId String
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }

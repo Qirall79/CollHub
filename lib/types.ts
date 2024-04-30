@@ -1,10 +1,8 @@
-import { Application } from "@prisma/client";
-
 export interface IUser {
 	id: string,
 	name: string | null,
-	email: string | null,
-	image: string | null,
+	discord: string | null,
+	github: string | null,
 }
 
 export interface IProjectInput {

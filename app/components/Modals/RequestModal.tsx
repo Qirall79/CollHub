@@ -16,9 +16,9 @@ import { useForm } from "react-hook-form";
 import { SelectLanguage } from "./SelectLanguage";
 import { trpc } from "@/lib/trpcClient";
 
-export default function CreatePostModal() {
+export default function RequestModal() {
   const utils = trpc.useUtils();
-  const mutation = trpc.projects.createProject.useMutation({
+  const mutation = trpc.requests.sendRequest.useMutation({
     onSuccess(input) {
       utils.projects.getAll.invalidate()
     },
@@ -32,7 +32,7 @@ export default function CreatePostModal() {
   } = useForm<IProjectInput>();
 
   const onSubmit = async (data: IProjectInput) => {
-    await mutation.mutateAsync(data);
+    
 
     reset({
       title: "",
