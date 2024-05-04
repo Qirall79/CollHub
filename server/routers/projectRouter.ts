@@ -1,28 +1,53 @@
 import { z } from "zod";
 import { protectedProcedure, router } from "..";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
 
 const projectRouter = router({
-  getAll: protectedProcedure.query(async () => {
-    const projects = await db.project.findMany({
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            discord: true,
-            github: true,
-          }
-        }
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+  getAll: protectedProcedure
+    .input(
+      z.object({
+        query: z.string().optional(),
+        page: z.number().optional(),
+        cursor: z.string().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      const { query, cursor } = input;
+      const projects = await db.project.findMany({
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              discord: true,
+              github: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        take: query?.length ? undefined : 6,
+        cursor: cursor?.length ? { id: cursor } : undefined,
+      });
+      
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (projects.length > 5) {
+        const nextItem = projects.pop();
+        nextCursor = nextItem?.id;
+      }
 
-    return projects;
-  }),
+      return {
+        projects,
+        nextCursor
+      };
+    }),
   getProject: protectedProcedure
     .input(
       z.object({
