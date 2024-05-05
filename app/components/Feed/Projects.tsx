@@ -4,12 +4,11 @@ import { trpc } from "@/lib/trpcClient";
 import { IProject } from "@/lib/types";
 import { Project } from "./Project";
 import { ProjectSkeleton } from "../Skeletons/ProjectSkeleton";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 export const Projects = ({ query }: { query?: string }) => {
-  const [page, setPage] = useState(0);
-  const skeletonRef = useRef<HTMLDivElement | null>(null)
+  const footRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const projectsQuery = trpc.projects.getAll.useInfiniteQuery(
     { query },
@@ -19,10 +18,29 @@ export const Projects = ({ query }: { query?: string }) => {
       },
     }
   );
-  const handleScroll = () => {
-    projectsQuery.fetchNextPage();
-    setPage(page + 1);
-  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (footRef.current) {
+        const rect = footRef.current.getBoundingClientRect();
+        const isVisible =
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <=
+            (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <=
+            (window.innerWidth || document.documentElement.clientWidth);
+
+        if (isVisible) projectsQuery.fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   if (projectsQuery.isLoading)
     return (
@@ -40,10 +58,15 @@ export const Projects = ({ query }: { query?: string }) => {
           return <Project key={project.id} project={project} />;
         });
       })}
-      {projectsQuery.isFetchingNextPage && <ProjectSkeleton ref={skeletonRef} />}
-      {!projectsQuery.isFetchingNextPage && !searchParams.get("query") && projectsQuery.hasNextPage && (
-        <button onClick={handleScroll}>Load more...</button>
+      {projectsQuery.isFetchingNextPage && (
+        <div className="flex flex-col grow space-y-6">
+          <ProjectSkeleton />
+          <ProjectSkeleton />
+        </div>
       )}
+      {!projectsQuery.isFetchingNextPage &&
+        !searchParams.get("query") &&
+        projectsQuery.hasNextPage && <div ref={footRef} />}
     </div>
   );
 };

@@ -18,12 +18,27 @@
   }
 }
 
+/* -- scrollbar -- */
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(2 6 23 / var(--tw-bg-opacity));
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(8 145 178 / var(--tw-bg-opacity));
+  border-radius: 14px;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
+      rgb(tomato)
     )
     rgb(var(--background-start-rgb));
 }

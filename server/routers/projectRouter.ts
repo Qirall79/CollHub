@@ -13,6 +13,7 @@ const projectRouter = router({
     )
     .query(async ({ input }) => {
       const { query, cursor } = input;
+      const limit = 9;
       const projects = await db.project.findMany({
         include: {
           author: {
@@ -33,12 +34,12 @@ const projectRouter = router({
             mode: "insensitive",
           },
         },
-        take: query?.length ? undefined : 6,
+        take: query?.length ? undefined : limit + 1,
         cursor: cursor?.length ? { id: cursor } : undefined,
       });
       
       let nextCursor: typeof cursor | undefined = undefined;
-      if (projects.length > 5) {
+      if (projects.length > limit) {
         const nextItem = projects.pop();
         nextCursor = nextItem?.id;
       }
