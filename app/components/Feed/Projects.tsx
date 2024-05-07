@@ -54,7 +54,7 @@ export const Projects = ({ query }: { query?: string }) => {
 
   return (
     <div className="flex flex-col grow">
-      {projectsQuery.data?.pages.map((page: { projects: IProject[] }) => {
+      {projectsQuery.data?.pages.map((page: { projects: IProject[] | any }) => {
         return page.projects?.map((project: IProject) => {
           return <Project key={project.id} project={project} />;
         });

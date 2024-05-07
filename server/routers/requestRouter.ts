@@ -58,22 +58,27 @@ export const requestRouter = router({
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const requests = await db.request.findMany({
       where: {
-        project: {
-          authorId: ctx.session.user.id,
-        },
+        AND: [
+          {
+            project: {
+              authorId: ctx.session.user.id,
+            },
+          },
+          { ignored: null },
+        ],
       },
       include: {
         sender: {
           select: {
             name: true,
-            image: true
-          }
+            image: true,
+          },
         },
         project: {
           select: {
-            title: true
-          }
-        }
+            title: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -82,4 +87,16 @@ export const requestRouter = router({
 
     return requests;
   }),
+  ignore: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ input: id }) => {
+      await db.request.update({
+        where: {
+          id,
+        },
+        data: {
+          ignored: true,
+        },
+      });
+    }),
 });

@@ -28,6 +28,7 @@ export interface IRequest {
 	github?: string,
 	senderId: string,
 	projectId: string,
+	ignored?: boolean,
 	sender?: IUser,
 	project?: IProject,
 }

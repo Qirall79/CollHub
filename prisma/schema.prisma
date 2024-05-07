@@ -81,6 +81,7 @@ model Request {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   body      String?
+  ignored   Boolean @default(false)
   discord   String
   github    String?
   senderId  String
