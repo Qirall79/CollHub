@@ -3,6 +3,7 @@ export interface IUser {
 	name: string | null,
 	discord: string | null,
 	github: string | null,
+	image: string | null
 }
 
 export interface IProjectInput {
@@ -17,11 +18,23 @@ export interface IProject {
 	description: string | null,
 	technologies: string,
 	author: IUser,
-	applications?: IApplication[]
+	requests?: IRequest[]
 }
 
-
-export interface IApplication {
+export interface IRequest {
 	id: string,
-	name: string
+	body?: string,
+	discord: string,
+	github?: string,
+	senderId: string,
+	projectId: string,
+	sender?: IUser,
+	project?: IProject,
+}
+
+export interface IRequestInput {
+	body?: string,
+	discord: string,
+	github?: string,
+	projectId: string
 }

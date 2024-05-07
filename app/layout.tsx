@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: "CollHub",
   description: "Developers' project collaborators platform",
   icons: {
-    icon: "/favicon.ico"
-  }
+    icon: "/favicon.ico",
+  },
 };
 
 export default async function RootLayout({
@@ -21,7 +21,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen min-w-screen dark text-foreground bg-slate-950`}>
+      <body
+        className={`${inter.className} min-h-screen min-w-screen dark text-foreground bg-slate-950`}
+      >
         <Provider>
           <Nav />
           {children}

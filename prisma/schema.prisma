@@ -81,6 +81,8 @@ model Request {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   body      String?
+  discord   String
+  github    String?
   senderId  String
   projectId String
   sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)

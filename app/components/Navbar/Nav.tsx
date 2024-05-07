@@ -18,6 +18,10 @@ export default async function Nav() {
       name: "Projects",
       path: "/projects",
     },
+    {
+      name: "Requests",
+      path: "/requests",
+    },
   ];
   if (!session?.user) return null;
 

@@ -21,7 +21,7 @@ export const requestRouter = router({
         },
       });
 
-      if (user && discord && !user?.discord) {
+      if (user && !user?.discord) {
         await db.user.update({
           where: {
             id: user.id,
@@ -48,9 +48,38 @@ export const requestRouter = router({
           projectId,
           senderId: ctx.session.user.id,
           body,
+          discord,
+          github,
         },
       });
 
       return request;
     }),
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const requests = await db.request.findMany({
+      where: {
+        project: {
+          authorId: ctx.session.user.id,
+        },
+      },
+      include: {
+        sender: {
+          select: {
+            name: true,
+            image: true
+          }
+        },
+        project: {
+          select: {
+            title: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return requests;
+  }),
 });

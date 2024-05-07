@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { trpc } from "@/lib/trpcClient";
@@ -40,7 +41,7 @@ export const Projects = ({ query }: { query?: string }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [footRef.current]);
 
   if (projectsQuery.isLoading)
     return (
@@ -52,7 +53,7 @@ export const Projects = ({ query }: { query?: string }) => {
     );
 
   return (
-    <div className="flex flex-col grow space-y-6">
+    <div className="flex flex-col grow">
       {projectsQuery.data?.pages.map((page: { projects: IProject[] }) => {
         return page.projects?.map((project: IProject) => {
           return <Project key={project.id} project={project} />;

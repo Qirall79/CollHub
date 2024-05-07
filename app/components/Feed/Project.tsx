@@ -14,6 +14,7 @@ import { CiMenuKebab } from "react-icons/ci";
 import DeleteModal from "../Modals/DeleteModal";
 import { trpc } from "@/lib/trpcClient";
 import { useSession } from "next-auth/react";
+import RequestModal from "../Modals/RequestModal";
 
 const chipColors: (
   | "default"
@@ -37,23 +38,29 @@ export const Project = ({ project }: { project: IProject }) => {
 
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const deleteProject = async (onClose: any) => {
     setIsLoading(true);
     await deleteMutation.mutateAsync({ id: project.id });
     setIsLoading(false);
     onClose();
-  };
-
-  const sendRequest = async () => {
-    // todo
+    setIsDeleted(true);
   };
 
   return (
     <div
-      className={`${inter.className} group flex flex-col py-4 px-6 border border-slate-800 hover:bg-slate-950 transition-all rounded-2xl cursor-pointer relative`}
-      onClick={() => {
-        if (user.id !== project.author.id) setDetailsVisible(!detailsVisible);
+      className={`${
+        inter.className
+      } group flex flex-col py-4 px-6 mb-6 border border-slate-800 hover:bg-slate-950 transition-all rounded-2xl cursor-pointer relative ${
+        isDeleted && "hidden mb-0"
+      }`}
+      onClick={(e: any) => {
+        if (
+          user.id !== project.author.id &&
+          e.target.parentElement.classList.contains("group")
+        )
+          setDetailsVisible(!detailsVisible);
       }}
     >
       <h3
@@ -85,21 +92,16 @@ export const Project = ({ project }: { project: IProject }) => {
           detailsVisible ? "flex flex-col" : "hidden"
         } transition-all`}
       >
-        <Button
-          onClick={sendRequest}
-          className="mt-6 mb-1 max-w-40 bg-cyan-950"
-        >
-          Send Request
-        </Button>
+        <RequestModal project={project} user={user} />
         <p className={`text-xs text-slate-700 translate-x-1`}>
-          {project.applications?.length
-            ? project.applications?.length > 0 &&
-              project.applications?.length + "requests sent"
+          {project.requests?.length
+            ? project.requests?.length > 0 &&
+              project.requests?.length + " requests sent"
             : ""}
         </p>
       </div>
-      {user.id == project.author.id && (
-        <Popover placement="bottom" className={``}>
+      {user?.id == project.author.id && (
+        <Popover placement="bottom" className={`${isDeleted && "hidden"}`}>
           <PopoverTrigger>
             <div className="absolute p-1 rounded-full hover:bg-cyan-800 top-3 right-5 transition">
               <CiMenuKebab />

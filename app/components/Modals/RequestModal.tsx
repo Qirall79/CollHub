@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -11,16 +10,21 @@ import {
   Input,
   Textarea,
 } from "@nextui-org/react";
-import { IProjectInput } from "@/lib/types";
+import { IProject, IRequest, IRequestInput, IUser } from "@/lib/types";
 import { useForm } from "react-hook-form";
-import { SelectLanguage } from "./SelectLanguage";
 import { trpc } from "@/lib/trpcClient";
+import { useState } from "react";
 
-export default function RequestModal() {
+export default function RequestModal({ project, user }: { project: IProject, user: IUser }) {
+  const [isRequested, setIsRequested] = useState(
+    !!project.requests?.filter(
+      (req: IRequest) => req.senderId === user?.id
+    ).length
+  );
   const utils = trpc.useUtils();
   const mutation = trpc.requests.sendRequest.useMutation({
     onSuccess(input) {
-      utils.projects.getAll.invalidate()
+      utils.projects.getAll.invalidate();
     },
   });
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -29,33 +33,41 @@ export default function RequestModal() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<IProjectInput>();
+  } = useForm<IRequestInput>();
 
-  const onSubmit = async (data: IProjectInput) => {
-    
-
+  const onSubmit = async (data: IRequestInput) => {
     reset({
-      title: "",
-      description: "",
-      technologies: "",
+      body: "",
+    });
+    data.projectId = project.id;
+    await mutation.mutateAsync({
+      discord: data.discord,
+      github: data.github,
+      projectId: data.projectId,
+      body: data.body,
     });
     onClose();
+    setIsRequested(true);
   };
+
+  console.log(project.requests, user?.id);
+  
 
   return (
     <>
       <Button
+        isDisabled={isRequested}
         onPress={onOpen}
-        className="bg-cyan-600 grow md:w-1/4 font-semibold"
+        className="mt-6 mb-1 max-w-40 bg-cyan-950"
       >
-        Create Project
+        {isRequested ? "Sent √" : "Send Request"}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Create Project
+                Send Request
               </ModalHeader>
               <ModalBody>
                 <form
@@ -64,23 +76,35 @@ export default function RequestModal() {
                 >
                   <Input
                     autoComplete="off"
-                    {...register("title", {
+                    {...register("discord", {
                       required: {
-                        message: "Please enter a name for your project",
+                        message: "Please enter your discord username",
                         value: true,
                       },
                     })}
-                    label="Name"
+                    label="Discord"
                     size="sm"
-                    isInvalid={!!errors.title}
-                    errorMessage={errors.title?.message}
+                    isInvalid={!!errors.discord}
+                    errorMessage={errors.discord?.message}
+                    defaultValue={user?.discord ?? ""}
+                  />
+
+                  <Input
+                    autoComplete="off"
+                    {...register("github", {
+                      required: false,
+                    })}
+                    label="Github"
+                    size="sm"
+                    defaultValue={user?.github ?? ""}
                   />
                   <Textarea
-                    {...register("description")}
-                    label="Description"
+                    {...register("body")}
+                    label="Body"
                     size="sm"
+                    placeholder="Want to add something ?"
                   />
-                  <SelectLanguage errors={errors} register={register} />
+
                   <div className="w-full flex justify-end space-x-2">
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Cancel
@@ -90,7 +114,7 @@ export default function RequestModal() {
                       type="submit"
                       className="bg-cyan-500"
                     >
-                      Post
+                      Send
                     </Button>
                   </div>
                 </form>

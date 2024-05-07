@@ -9,8 +9,7 @@ export default async function Home() {
   if (!session?.user) redirect("/login");
 
   return (
-    <main className="w-full max-w-[1280px] m-auto px-[10%] py-8 gap-6">
-      <Feed />
-    </main>
+    <main className="w-full max-w-[1280px] m-auto px-[10%] py-8"><Feed /></main>
+      
   );
 }

@@ -38,7 +38,7 @@ export const SelectLanguage = ({
           message: "Select the languages used for this project",
         },
       })}
-      isInvalid={!!errors.technologies}
+      isInvalid={errors.technologies?.message ? true : false}
       errorMessage={errors.technologies?.message}
       items={languages}
       isMultiline={true}

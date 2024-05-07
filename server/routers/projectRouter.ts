@@ -24,6 +24,11 @@ const projectRouter = router({
               github: true,
             },
           },
+          requests: {
+            select: {
+              senderId: true,
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
@@ -37,7 +42,7 @@ const projectRouter = router({
         take: query?.length ? undefined : limit + 1,
         cursor: cursor?.length ? { id: cursor } : undefined,
       });
-      
+
       let nextCursor: typeof cursor | undefined = undefined;
       if (projects.length > limit) {
         const nextItem = projects.pop();
@@ -46,7 +51,7 @@ const projectRouter = router({
 
       return {
         projects,
-        nextCursor
+        nextCursor,
       };
     }),
   getProject: protectedProcedure

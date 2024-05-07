@@ -20,7 +20,7 @@ export default function CreatePostModal() {
   const utils = trpc.useUtils();
   const mutation = trpc.projects.createProject.useMutation({
     onSuccess(input) {
-      utils.projects.getAll.invalidate()
+      utils.projects.getAll.invalidate();
     },
   });
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -50,7 +50,18 @@ export default function CreatePostModal() {
       >
         Create Project
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+      <Modal
+        isOpen={isOpen}
+        onClose={() =>
+          reset({
+            title: "",
+            description: "",
+            technologies: "",
+          })
+        }
+        onOpenChange={onOpenChange}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose) => (
             <>
