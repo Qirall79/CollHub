@@ -74,9 +74,9 @@ export const Project = ({ project }: { project: IProject }) => {
       </p>
       <p className="text-sm mb-4">{project.description}</p>
       <ul className="flex space-x-2">
-        {project.technologies.split(",").map((t: string) => {
+        {project.technologies.map((t: string) => {
           return (
-            <Chip
+            t !== " " && <Chip
               size="sm"
               color={chipColors[Math.floor(Math.random() * chipColors.length)]}
               key={t.toLowerCase()}

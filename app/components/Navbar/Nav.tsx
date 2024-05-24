@@ -6,6 +6,7 @@ import { IUser } from "@/lib/types";
 import Link from "next/link";
 import { vt323 } from "@/app/fonts";
 import MenuBar from "./MenuBar";
+import { trpcServer } from "@/lib/trpcServerClient";
 
 export default async function Nav() {
   const session = await getServerSession(authOptions);
@@ -15,7 +16,7 @@ export default async function Nav() {
       path: "/",
     },
     {
-      name: "Projects",
+      name: "My Projects",
       path: "/projects",
     },
     {
@@ -24,6 +25,7 @@ export default async function Nav() {
     },
   ];
   if (!session?.user) return null;
+  const requestsCount = await trpcServer.requests.getCount();
 
   return (
     <nav className="w-full max-w-[1650px] m-auto flex justify-between items-center py-6 px-[10%]">
@@ -40,12 +42,12 @@ export default async function Nav() {
           return (
             <li className="hover:text-cyan-500 transition" key={item.name}>
               <Link href={item.path}>{item.name}</Link>
+              {requestsCount > 0 && item.name == "Requests" && (
+                <span className=" bg-pink-600  text-sm px-1 rounded-full relative -top-2">{requestsCount}</span>
+              )}
             </li>
           );
         })}
-        <li className="hover:text-cyan-500 transition cursor-pointer">
-          Notifications
-        </li>
       </ul>
       <UserDropdown user={session?.user as IUser} />
     </nav>

@@ -71,7 +71,7 @@ model Project {
   title        String
   description  String?
   createdAt    DateTime  @default(now())
-  technologies String
+  technologies String[]
   requests     Request[]
   authorId     String
   author       User      @relation(name: "author", fields: [authorId], references: [id], onDelete: Cascade)

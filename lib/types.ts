@@ -16,7 +16,7 @@ export interface IProject {
 	id: string,
 	title: string,
 	description: string | null,
-	technologies: string,
+	technologies: string[],
 	author: IUser,
 	requests?: IRequest[]
 }

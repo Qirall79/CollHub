@@ -25,16 +25,20 @@ const languages = [
 export const SelectLanguage = ({
   errors,
   register,
+  required,
+  placeholder
 }: {
   errors: FieldErrors<IProjectInput>;
   register: UseFormRegister<IProjectInput>;
+  required: boolean;
+  placeholder?: string
 }) => {
   return (
     <Select
       size="lg"
       {...register("technologies", {
         required: {
-          value: true,
+          value: required,
           message: "Select the languages used for this project",
         },
       })}
@@ -43,7 +47,7 @@ export const SelectLanguage = ({
       items={languages}
       isMultiline={true}
       selectionMode="multiple"
-      placeholder="Select languages"
+      placeholder={placeholder ?? "Select languages"}
       labelPlacement="outside"
       renderValue={(items) => {
         return (

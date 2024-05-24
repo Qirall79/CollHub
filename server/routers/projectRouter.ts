@@ -9,12 +9,20 @@ const projectRouter = router({
         query: z.string().optional(),
         page: z.number().optional(),
         cursor: z.string().optional(),
+        filters: z.object({
+          languages: z.string().optional(),
+          sort: z.enum(["asc", "desc"])
+        })
       })
     )
-    .query(async ({ input }) => {
-      const { query, cursor } = input;
+    .query(async ({ input, ctx }) => {
+      const { query, cursor, filters } = input;
+      console.log("SORT: ", filters?.sort);
+      
       const limit = 9;
-      const projects = await db.project.findMany({
+
+      // if there are filters
+      let projects = await db.project.findMany({
         include: {
           author: {
             select: {
@@ -31,13 +39,27 @@ const projectRouter = router({
           },
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: filters.sort,
         },
         where: {
-          title: {
-            contains: query,
-            mode: "insensitive",
-          },
+          AND: [
+            {
+              title: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
+            {
+              authorId: {
+                not: ctx.session.user.id,
+              },
+            },
+            {
+              technologies: {
+                hasSome: filters.languages?.length ? filters.languages.toLowerCase().split(",") : [" "],
+              }
+            }
+          ],
         },
         take: query?.length ? undefined : limit + 1,
         cursor: cursor?.length ? { id: cursor } : undefined,
@@ -54,6 +76,17 @@ const projectRouter = router({
         nextCursor,
       };
     }),
+  getUserProjects: protectedProcedure.query(async ({ ctx }) => {
+    const projects = await db.project.findMany({
+      where: {
+        authorId: ctx.session.user.id,
+      },
+      include: {
+        author: true
+      }
+    });
+    return projects;
+  }),
   getProject: protectedProcedure
     .input(
       z.object({
@@ -87,7 +120,7 @@ const projectRouter = router({
           authorId,
           title,
           description,
-          technologies,
+          technologies: technologies.toLowerCase().split(","),
         },
       });
       return project;

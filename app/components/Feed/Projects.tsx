@@ -8,11 +8,11 @@ import { ProjectSkeleton } from "../Skeletons/ProjectSkeleton";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export const Projects = ({ query }: { query?: string }) => {
+export const Projects = ({ query, filters }: { query?: string, filters: {languages: string, sort: "asc" | "desc"} }) => {
   const footRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const projectsQuery = trpc.projects.getAll.useInfiniteQuery(
-    { query },
+    { query, filters },
     {
       getNextPageParam: (lastPage) => {
         return lastPage.nextCursor;

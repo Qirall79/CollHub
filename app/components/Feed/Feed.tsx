@@ -7,11 +7,16 @@ import FilterModal from "../Modals/FilterModal";
 import { Projects } from "./Projects";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { useState } from "react";
 
 export default function Feed() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [filters, setFilters] = useState<{languages: string, sort: "desc" | "asc"}>({
+    languages: "",
+    sort: "desc",
+  });
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
@@ -35,11 +40,14 @@ export default function Feed() {
           defaultValue={searchParams.get("query")?.toString()}
         />
         <div className="flex items-center space-x-2 w-full md:w-auto">
-          <FilterModal />
+          <FilterModal setFilters={setFilters} />
           <CreatePostModal />
         </div>
       </div>
-      <Projects query={searchParams.get("query")?.toString()} />
+      <Projects
+        filters={filters}
+        query={searchParams.get("query")?.toString()}
+      />
     </div>
   );
 }

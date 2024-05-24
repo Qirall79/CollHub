@@ -32,6 +32,7 @@ export default function CreatePostModal() {
   } = useForm<IProjectInput>();
 
   const onSubmit = async (data: IProjectInput) => {
+    data.technologies = " ,".concat(data.technologies)
     await mutation.mutateAsync(data);
 
     reset({
@@ -91,7 +92,7 @@ export default function CreatePostModal() {
                     label="Description"
                     size="sm"
                   />
-                  <SelectLanguage errors={errors} register={register} />
+                  <SelectLanguage errors={errors} register={register} required />
                   <div className="w-full flex justify-end space-x-2">
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Cancel

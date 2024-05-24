@@ -64,7 +64,7 @@ export const requestRouter = router({
               authorId: ctx.session.user.id,
             },
           },
-          { ignored: null },
+          { ignored: false },
         ],
       },
       include: {
@@ -86,6 +86,22 @@ export const requestRouter = router({
     });
 
     return requests;
+  }),
+  getCount: protectedProcedure.query(async ({ ctx }) => {
+    const count = await db.request.count({
+      where: {
+        AND: [
+          {
+            project: {
+              authorId: ctx.session.user.id,
+            },
+          },
+          { ignored: false },
+        ],
+      },
+    });
+
+    return count;
   }),
   ignore: protectedProcedure
     .input(z.string())

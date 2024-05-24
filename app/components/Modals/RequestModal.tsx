@@ -50,9 +50,6 @@ export default function RequestModal({ project, user }: { project: IProject, use
     setIsRequested(true);
   };
 
-  console.log(project.requests, user?.id);
-  
-
   return (
     <>
       <Button

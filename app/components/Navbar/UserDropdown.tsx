@@ -20,12 +20,10 @@ export default function UserDropdown({ user }: { user: IUser }) {
             isBordered
             as="button"
             className="transition-transform"
-            src={user.image}
+            src={user.image || ""}
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">
-          <DropdownItem key="settings">My Settings</DropdownItem>
-          <DropdownItem key="settings">My Applications</DropdownItem>
           <DropdownItem
             className="text-danger"
             key="logout"
